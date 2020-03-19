@@ -1,4 +1,7 @@
-NomPrenoms		Mle		Age	E-mail				AL	AN	E	P	Moyenne	Rang	Statut
+NomPrenoms  Mle  Age  E-mail  AL  AN  E  P  Moyenne  Rang  Statut
 
-Zougouri_Elsa	ENSIT_208	18	elsazougouri224@gmail.com		12.00	11.00	14.00	12.50	12.38	0	0
-Ametchi_Liam	ENSIT_207	19	ametchiliam@gmail.com		12.00	11.00	15.00	16.00	13.50	0	0
+Zougouri_Elsa  208  18  elsazougouri224@gmail.com  18.00  19.00  10.00  17.00  16.00  0.00  0.00
+Ametchi_Liam  207  19  ametchiliam2020@gmail.com  17.00  15.00  16.00  16.00  16.00  0.00  0.00
+Soumahoro_Siriki  201  19  soumahorosiriki@yahoo.org  18.00  16.00  10.00  10.00  13.50  0.00  0.00
+Domoa_Marlon  200  20  domoamarlon2020@gmail.com  17.00  14.00  12.00  11.00  13.50  0.00  0.00
+Memel_Joel  202  25  memeljoel202012@gmail.com  18.00  10.00  13.00  12.50  13.38  0.00  0.00
