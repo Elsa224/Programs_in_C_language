@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1563420921 source:d:\documents\ensit\projetlangagec\projetdebanque1\main.c
+	"libDeBase.h"
+	"ProjetDeBank_Fonction.h"
+
+1563234139 ank_Fonction.h"
+
+1563422836 d:\documents\ensit\projetlangagec\projetdebanque1\projetdebank_fonction.h
+
+1559925847 d:\documents\ensit\projetlangagec\projetdebanque1\libdebase.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<ctype.h>
+
+1559925847 
+
+1563234139 source:/media/elsa/Dossiers/Documents/ENSIT/ProjetLangageC/ProjetDeBanque1/main.c
+	"libDeBase.h"
+	"ProjetDeBank_Fonction.h"
+
+1559925847 /media/elsa/Dossiers/Documents/ENSIT/ProjetLangageC/ProjetDeBanque1/libDeBase.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<ctype.h>
+
+1563248518 /media/elsa/Dossiers/Documents/ENSIT/ProjetLangageC/ProjetDeBanque1/ProjetDeBank_Fonction.h
+
