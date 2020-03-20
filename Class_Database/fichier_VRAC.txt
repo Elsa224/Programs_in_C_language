@@ -1,4 +1,2 @@
-NomPrenoms		Mle		Age		E-mail			AL	AN	E	P	Moyenne	Rang	Statut
-
 Zougouri_Elsa		ENSIT_208	18	elsazougouri224@gmail.com	19.00	10.00	18.00	19.00	16.50	0	0
 Ametci_Liam		ENSIT_207	19	ametchiliam2020@gmail.com	12.00	11.00	16.00	16.00	13.75	0	0
