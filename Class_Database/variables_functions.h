@@ -51,28 +51,18 @@ double average(int taille, float tableau[]){
 //Procédure de saisie des valeurs de chaque étudiant
 void saisieEtudiant(etudiant tableau[]){
     //Saisie des valeurs de chaque étudiant
-        //Comme les 6 premiers caractères du matricule sont "ENSIT_", je vais déjà les initialiser
+        char mat[3]; // Chaine des 3 derniers caractères du matricule
+        
         for (i = 0; i < TAILLE_N; i++)
         {
-            tableau[i].matricule[0] = 'E';
-            tableau[i].matricule[1] = 'N';
-            tableau[i].matricule[2] = 'S';
-            tableau[i].matricule[3] = 'I';
-            tableau[i].matricule[4] = 'T';
-            tableau[i].matricule[5] = '_';
-        }
-
-        for (i = 0; i < TAILLE_N; i++)
-        {
+            strcat(tableau[i].matricule,"ENSIT_");//Comme les 6 premiers caractères du matricule sont "ENSIT_", je vais déjà les initialiser
             system("clear");
             printf("\nEtudiant n* %d : \n\t", i + 1);
             printf("Saisissez les nom et prenom s'il vous plait (ex: Ametchi_Liam) : ");
             scanf("%s", tableau[i].nomPrenoms);
             printf("\tMatricule : \"ENSIT_***\". Saisissez les 3 derniers chiffres (\"***\") du matricule s'il vous plait : ");
-            for (k = 6; k < 9; k++)
-            {
-                scanf("%s", &tableau[i].matricule[k]);
-            }
+            scanf("%s",mat);
+            strcat(tableau[i].matricule,mat); // Ajout des 3 derniers caractères à la chaine ENSIT_ initialisée plus haut
             printf("\tSaisissez l'age s'il vous plait : ");
             scanf("%d", &tableau[i].age);
             do
