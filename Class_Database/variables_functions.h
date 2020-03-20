@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define TAILLE_N 2 //N = 10 mais pour la mise au point des programmes, utiliser tab[6] ou tab[7]
+#define TAILLE_N 10 //N = 10 
 #define NOM_PRENOM_LENGTH 22 
 #define EMAIL_LENGTH 27 
 #define MATRICULE_LENGTH 11 
-
-
 
 //Déclaration avec typedef la structure Etudiant
 typedef struct etudiant{
@@ -19,16 +17,22 @@ typedef struct etudiant{
 
 //-----------------Prototypes des fonctions--------------------------------
 double average(int taille, float tableau[]);
-void creationDeFICH_VRAC( FILE *pointeurFichier, etudiant tableau[] );
-void lectureFICH_VRAC(FILE *pointeurFichier, etudiant tableau[]);
+void triBulleAlphabetique(int taille, etudiant tableau[]);
+void triBulleMoyenne(int taille, etudiant tableau[]);
+
+void creationFichier(FILE *pointeurFichier, etudiant tableau[]);
+void lectureFichier(FILE *pointeurFichier, etudiant tableau[]);
+void creationFICH_VRAC(FILE *pointeurFichier, etudiant tableau[]);
+void creationFICH_BASE(FILE *pointeurFichier, etudiant tableau[]);
+void creationFICH_FINAL(FILE *pointeurFichier, etudiant tableau[]);
+
 char menuDeTravail();
 //------------------------------------------------------------------------
 
 //Déclaration des variables globales
-FILE* fichierBD_initial, fichierBD_modifie;
-int i,j,k,nbNotes = 4;
+FILE* fichierBD_initial, *fichierBD_modifie;
+int i, j, k = 1, nbNotes = 4;
 char choixMenu; etudiant prepa2[TAILLE_N]; 
-
 
 //Fonction moyenne
 double average(int taille, float tableau[]){
@@ -42,27 +46,72 @@ double average(int taille, float tableau[]){
     return moy;
 }
 
+///Étape intermédiaire : Tri selon le nom le tableau par ordre alphabétique
+void triBulleAlphabetique(int taille, etudiant tableau[])   //Procédure de tri
+{
+    int ok = 0, i;
+    etudiant tamp;
+    while (ok == 0)
+    {
+        ok = 1;
+        for (i = 0; i < taille - 1; i++)
+        {
+            if (strcmp(tableau[i].nomPrenoms, tableau[i + 1].nomPrenoms) > 0)
+            {
+                tamp = tableau[i];
+                tableau[i] = tableau[i + 1];
+                tableau[i + 1] = tamp;
+                ok = 0;
+            }
+        }
+    }
+}
+
+///Etape intermédiaire : tri décroissant selon la moyenne pour trouver le rang
+void triBulleMoyenne(int taille, etudiant tableau[])    //Procédure de tri
+{
+    etudiant tampon;
+    for (i = 0; i < TAILLE_N - 1; i++)
+    {
+        for (j = 0; j < TAILLE_N - (i + 1); j++)
+        {
+            if (tableau[j].tabDonnees[4] < tableau[j + 1].tabDonnees[4])
+            {
+                tampon = tableau[j];
+                tableau[j] = tableau[j + 1];
+                tableau[j + 1] = tampon;
+            }
+        }
+    }
+    for ( i = 0; i < TAILLE_N; i++) //Pour avoir le rang
+        {tableau[i].tabDonnees[5] = i+1;}
+
+    for ( i = 0; i < TAILLE_N; i++)
+    {
+        if (tableau[i].tabDonnees[4] == tableau[i+1].tabDonnees[4]) //Pour les ex-aequo
+            {tableau[i+1].tabDonnees[5] = tableau[i].tabDonnees[5];}
+    }
+    
+}
+
 //Procédure de saisie des valeurs de chaque étudiant
 void saisieEtudiant(etudiant tableau[]){
     //Saisie des valeurs de chaque étudiant
-        char mat[3]; // Chaine des 3 derniers caractères du matricule
-        
         for (i = 0; i < TAILLE_N; i++)
         {
-            strcat(tableau[i].matricule,"ENSIT_");//Comme les 6 premiers caractères du matricule sont "ENSIT_", je vais déjà les initialiser
+            strcpy(tableau[i].matricule, "ENSIT_"); //Initialisation des 6 premiers char du matricule
             system("clear");
             printf("\nEtudiant n* %d : \n\t", i + 1);
             printf("Saisissez les nom et prenom s'il vous plait (ex: Ametchi_Liam) : ");
             scanf("%s", tableau[i].nomPrenoms);
             printf("\tMatricule : \"ENSIT_***\". Saisissez les 3 derniers chiffres (\"***\") du matricule s'il vous plait : ");
-            scanf("%s",mat);
-            strcat(tableau[i].matricule,mat); // Ajout des 3 derniers caractères à la chaine ENSIT_ initialisée plus haut
+            char chiffreMatricule[4]; scanf("%s", chiffreMatricule); strcat(tableau[i].matricule, chiffreMatricule);
             printf("\tSaisissez l'age s'il vous plait : ");
             scanf("%d", &tableau[i].age);
             do
             {
                 printf("\tSaisissez l'email s'il vous plait (25 caracteres pas plus pas moins) : ");
-                scanf("%s", &tableau[i].email);
+                scanf("%s", tableau[i].email);
 
             } while (strlen(tableau[i].email) != 25);
             
@@ -80,14 +129,10 @@ void saisieEtudiant(etudiant tableau[]){
         }
 }
 
-///Etape (i) : création de FICH_VRAC
-void creationDeFICH_VRAC( FILE *pointeurFichier, etudiant tableau[] ){
-    //Partie saisie dans la console
-        saisieEtudiant(tableau);
-
-    //Partie saisie dans le fichier
-        pointeurFichier = fopen("fichier_VRAC.txt", "w" );
-        for ( i = 0; i < TAILLE_N; i++)
+//Procédure de création d'un fichier
+void creationFichier(FILE *pointeurFichier, etudiant tableau[])
+{
+    for ( i = 0; i < TAILLE_N; i++)
         {  
             //Création de la BD
             fprintf(pointeurFichier, "%s\t\t%s\t%d\t%s\t"
@@ -98,31 +143,28 @@ void creationDeFICH_VRAC( FILE *pointeurFichier, etudiant tableau[] ){
                                                             , tableau[i].tabDonnees[5], tableau[i].tabDonnees[6] );
         }
         fclose(pointeurFichier);
-
-}   //fin de creationDeFICH_VRAC
+}
 
 //Etape intermédiaire : lecture de la BD
-void lectureFICH_VRAC(FILE *pointeurFichier, etudiant tableau[]){
-    pointeurFichier = fopen("fichier_VRAC.txt", "r" );
+void lectureFichier(FILE *pointeurFichier, etudiant tableau[]){
     if (pointeurFichier == NULL)
     {
         printf("Desole, fichier introuvable. Veuillez d'abord creer le fichier avant de le lire!\n");
     }
     else
     {
-        printf("\n\nLa saisie obtenue est la suivante :\n\n");
         printf("NomPrenoms\t\tMle\t\tAge\t\tE-mail\t\t\t"
                    "AL\tAN\tE\tP\t"
-                   "Moyenne\t Rang\t Statut\n\n");
+                   "Moyenne\tRang\tStatut\n\n");
 
-        for ( i = 0; i < TAILLE_N; i++){  
+        for ( i = 0; i < TAILLE_N; i++)
+        {  
+            fscanf(pointeurFichier, "%s\t\t%s\t%d\t%s\t%g\t%g\t%g\t%g\t%g\t%g\t%g\n", tableau[i].nomPrenoms, tableau[i].matricule, &tableau[i].age
+                                                                                 , tableau[i].email, &tableau[i].tabDonnees[0], &tableau[i].tabDonnees[1]
+                                                                                 , &tableau[i].tabDonnees[2], &tableau[i].tabDonnees[3], &tableau[i].tabDonnees[4]
+                                                                                 , &tableau[i].tabDonnees[5], &tableau[i].tabDonnees[6] );
 
-         fscanf(pointeurFichier, "%s\t\t%s\t%d\t%s\t%g\t%g\t%g\t%g\t%g\t%g\t%g\n", tableau[i].nomPrenoms, tableau[i].matricule, &tableau[i].age
-                                                                                        , tableau[i].email, &tableau[i].tabDonnees[0], &tableau[i].tabDonnees[1]
-                                                                                        , &tableau[i].tabDonnees[2], &tableau[i].tabDonnees[3], &tableau[i].tabDonnees[4]
-                                                                                        , &tableau[i].tabDonnees[5], &tableau[i].tabDonnees[6] );
-
-    }
+        }
         fclose(pointeurFichier);                                                                                             
     
         //Affichage
@@ -130,14 +172,76 @@ void lectureFICH_VRAC(FILE *pointeurFichier, etudiant tableau[]){
         {
             printf("%s\t\t%s\t%d\t%s\t"
                     "%.2lf\t%.2lf\t%.2lf\t%.2lf\t"
-                    " %.2lf\t  %.0lf\t  %.0lf\n", tableau[i].nomPrenoms, tableau[i].matricule, tableau[i].age
+                    "%.2lf\t%.0lf\t%.0lf\n", tableau[i].nomPrenoms, tableau[i].matricule, tableau[i].age
                                                           , tableau[i].email, tableau[i].tabDonnees[0], tableau[i].tabDonnees[1]
                                                           , tableau[i].tabDonnees[2], tableau[i].tabDonnees[3], tableau[i].tabDonnees[4]
                                                           , tableau[i].tabDonnees[5], tableau[i].tabDonnees[6] );
         }                                                                                                                                                               
     }            
-} //fin de lecture FICH_VRAC
+} //fin de lecture FICHIER
 
+///Etape (i) : création de FICH_VRAC
+void creationFICH_VRAC(FILE *pointeurFichier, etudiant tableau[])
+{
+    //Partie saisie dans la console
+    saisieEtudiant(tableau);
+
+    //Partie saisie dans le fichier
+    pointeurFichier = fopen("fichier_VRAC.txt", "w" );
+    creationFichier(pointeurFichier, tableau);
+
+    //Lecture et affichage du fichier créé
+    printf("\n\nLa saisie obtenue est la suivante :\n\n");
+    pointeurFichier = fopen("fichier_VRAC.txt", "r" );
+    lectureFichier(pointeurFichier, tableau);
+
+
+}   //fin de creationFICH_VRAC
+
+//Etape (ii) : création du fichier avec les noms rangés par ordre alphabétique
+void creationFICH_BASE(FILE *pointeurFichier, etudiant tableau[])
+{
+    //lecture du fichier FICH_VRAC
+    printf("\n\nLa saisie obtenue dans le fichier donne :\n\n");
+    pointeurFichier = fopen("fichier_VRAC.txt", "r");
+    lectureFichier(pointeurFichier, tableau);
+
+    //Tri par ordre alphabétique
+    triBulleAlphabetique(TAILLE_N, tableau);
+
+    //Création du fichier FICH_BASE
+    pointeurFichier = fopen("fichier_BASE.txt", "w");
+    creationFichier(pointeurFichier, tableau);
+
+    //lecture du fichier FICH_BASE
+    printf("\n\nLe tri par ordre alphabetique donne :\n\n");
+    pointeurFichier = fopen("fichier_BASE.txt", "r");
+    lectureFichier(pointeurFichier, tableau);
+}
+
+//Etape (iii) : création du fichier avec les noms rangés par ordre alphabétique et la colonne de rang
+void creationFICH_FINAL(FILE *pointeurFichier, etudiant tableau[])
+{
+    //lecture du fichier FICH_BASE
+    printf("\n\nOn lit encore le fichier rangé :\n\n");
+    pointeurFichier = fopen("fichier_BASE.txt", "r");
+    lectureFichier(pointeurFichier, tableau);
+
+    //Tri par la moyenne pour obtenir les rangs avec existence des ex-aequo s'il y a
+    triBulleMoyenne(TAILLE_N, tableau);
+
+    //Tri par ordre alphabétique
+    triBulleAlphabetique(TAILLE_N, tableau);
+
+    //Création du fichier FICH_FINAL
+    pointeurFichier = fopen("fichier_FINAL.txt", "w");
+    creationFichier(pointeurFichier, tableau);
+
+    //lecture du fichier FICH_BASE
+    printf("\n\nLe fichier range selon l'ordre alphabetique et le rang renseigne donne :\n\n");
+    pointeurFichier = fopen("fichier_FINAL.txt", "r");
+    lectureFichier(pointeurFichier, tableau);
+}
 
 //Tout d'abord le menu
 char menuDeTravail(){
@@ -165,8 +269,4 @@ char menuDeTravail(){
 
     //Si jamais l'on retourne un caractère c'est parce que l'utilisateur a sélectionné l'une des options proposées
     return choixMenu;
-
-    
-
 }
-
