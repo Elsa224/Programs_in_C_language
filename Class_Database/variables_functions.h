@@ -27,12 +27,6 @@ char menuDeTravail();
 //Déclaration des variables globales
 FILE* fichierBD_initial, fichierBD_modifie;
 int i,j,k,nbNotes = 4;
-int longueurPremierePhrase = strlen("NomPrenoms\t\tMle\t\tAge\t\tE-mail\t\t\t"
-                                              "AL\tAN\tE\tP\t"
-                                              "Moyenne\tRang\tStatut\n\n");
-int longueurEnregistrement = strlen("NomPrenoms\t\tMle\t\tAge\t\tE-mail\t\t\t"
-                                              "AL\tAN\tE\tP\t"
-                                              "Moyenne\tRang\tStatut\n\n");
 char choixMenu; etudiant prepa2[TAILLE_N]; 
 
 
@@ -93,12 +87,6 @@ void creationDeFICH_VRAC( FILE *pointeurFichier, etudiant tableau[] ){
 
     //Partie saisie dans le fichier
         pointeurFichier = fopen("fichier_VRAC.txt", "w" );
-
-        //Saisie de la ligne "NomPrenoms.....Mle.....Age"
-        fprintf(pointeurFichier, "NomPrenoms\t\tMle\t\tAge\t\tE-mail\t\t\t"
-                                              "AL\tAN\tE\tP\t"
-                                              "Moyenne\tRang\tStatut\n\n");
-
         for ( i = 0; i < TAILLE_N; i++)
         {  
             //Création de la BD
@@ -125,7 +113,7 @@ void lectureFICH_VRAC(FILE *pointeurFichier, etudiant tableau[]){
         printf("\n\nLa saisie obtenue est la suivante :\n\n");
         printf("NomPrenoms\t\tMle\t\tAge\t\tE-mail\t\t\t"
                    "AL\tAN\tE\tP\t"
-                   "Moyenne\tRang\tStatut\n\n");
+                   "Moyenne\t Rang\t Statut\n\n");
 
         for ( i = 0; i < TAILLE_N; i++){  
 
@@ -142,7 +130,7 @@ void lectureFICH_VRAC(FILE *pointeurFichier, etudiant tableau[]){
         {
             printf("%s\t\t%s\t%d\t%s\t"
                     "%.2lf\t%.2lf\t%.2lf\t%.2lf\t"
-                    "%.2lf\t%.0lf\t%.0lf\n", tableau[i].nomPrenoms, tableau[i].matricule, tableau[i].age
+                    " %.2lf\t  %.0lf\t  %.0lf\n", tableau[i].nomPrenoms, tableau[i].matricule, tableau[i].age
                                                           , tableau[i].email, tableau[i].tabDonnees[0], tableau[i].tabDonnees[1]
                                                           , tableau[i].tabDonnees[2], tableau[i].tabDonnees[3], tableau[i].tabDonnees[4]
                                                           , tableau[i].tabDonnees[5], tableau[i].tabDonnees[6] );
