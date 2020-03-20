@@ -11,8 +11,9 @@ int main(int argc, char const *argv[])
     switch (result)
     {
     case '1':
-        //creationDeFICH_VRAC(fichierBD_initial, prepa2);
-        lectureFICH_VRAC(fichierBD_initial, prepa2);
+        //creationFICH_VRAC(fichierBD_initial, prepa2);
+        creationFICH_BASE(fichierBD_initial, prepa2);
+        creationFICH_FINAL(fichierBD_initial, prepa2);
         break;
     case '2':
         //ajoutEtudiant();
