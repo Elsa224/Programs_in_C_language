@@ -27,12 +27,6 @@ char menuDeTravail();
 //Déclaration des variables globales
 FILE* fichierBD_initial, fichierBD_modifie;
 int i,j,k,nbNotes = 4;
-int longueurPremierePhrase = strlen("NomPrenoms\t\tMle\t\tAge\t\tE-mail\t\t\t"
-                                              "AL\tAN\tE\tP\t"
-                                              "Moyenne\tRang\tStatut\n\n");
-int longueurEnregistrement = strlen("NomPrenoms\t\tMle\t\tAge\t\tE-mail\t\t\t"
-                                              "AL\tAN\tE\tP\t"
-                                              "Moyenne\tRang\tStatut\n\n");
 char choixMenu; etudiant prepa2[TAILLE_N]; 
 
 
@@ -51,28 +45,18 @@ double average(int taille, float tableau[]){
 //Procédure de saisie des valeurs de chaque étudiant
 void saisieEtudiant(etudiant tableau[]){
     //Saisie des valeurs de chaque étudiant
-        //Comme les 6 premiers caractères du matricule sont "ENSIT_", je vais déjà les initialiser
+        char mat[3]; // Chaine des 3 derniers caractères du matricule
+        
         for (i = 0; i < TAILLE_N; i++)
         {
-            tableau[i].matricule[0] = 'E';
-            tableau[i].matricule[1] = 'N';
-            tableau[i].matricule[2] = 'S';
-            tableau[i].matricule[3] = 'I';
-            tableau[i].matricule[4] = 'T';
-            tableau[i].matricule[5] = '_';
-        }
-
-        for (i = 0; i < TAILLE_N; i++)
-        {
+            strcat(tableau[i].matricule,"ENSIT_");//Comme les 6 premiers caractères du matricule sont "ENSIT_", je vais déjà les initialiser
             system("clear");
             printf("\nEtudiant n* %d : \n\t", i + 1);
             printf("Saisissez les nom et prenom s'il vous plait (ex: Ametchi_Liam) : ");
             scanf("%s", tableau[i].nomPrenoms);
             printf("\tMatricule : \"ENSIT_***\". Saisissez les 3 derniers chiffres (\"***\") du matricule s'il vous plait : ");
-            for (k = 6; k < 9; k++)
-            {
-                scanf("%s", &tableau[i].matricule[k]);
-            }
+            scanf("%s",mat);
+            strcat(tableau[i].matricule,mat); // Ajout des 3 derniers caractères à la chaine ENSIT_ initialisée plus haut
             printf("\tSaisissez l'age s'il vous plait : ");
             scanf("%d", &tableau[i].age);
             do
@@ -103,12 +87,6 @@ void creationDeFICH_VRAC( FILE *pointeurFichier, etudiant tableau[] ){
 
     //Partie saisie dans le fichier
         pointeurFichier = fopen("fichier_VRAC.txt", "w" );
-
-        //Saisie de la ligne "NomPrenoms.....Mle.....Age"
-        fprintf(pointeurFichier, "NomPrenoms\t\tMle\t\tAge\t\tE-mail\t\t\t"
-                                              "AL\tAN\tE\tP\t"
-                                              "Moyenne\tRang\tStatut\n\n");
-
         for ( i = 0; i < TAILLE_N; i++)
         {  
             //Création de la BD
@@ -135,7 +113,7 @@ void lectureFICH_VRAC(FILE *pointeurFichier, etudiant tableau[]){
         printf("\n\nLa saisie obtenue est la suivante :\n\n");
         printf("NomPrenoms\t\tMle\t\tAge\t\tE-mail\t\t\t"
                    "AL\tAN\tE\tP\t"
-                   "Moyenne\tRang\tStatut\n\n");
+                   "Moyenne\t Rang\t Statut\n\n");
 
         for ( i = 0; i < TAILLE_N; i++){  
 
@@ -152,7 +130,7 @@ void lectureFICH_VRAC(FILE *pointeurFichier, etudiant tableau[]){
         {
             printf("%s\t\t%s\t%d\t%s\t"
                     "%.2lf\t%.2lf\t%.2lf\t%.2lf\t"
-                    "%.2lf\t%.0lf\t%.0lf\n", tableau[i].nomPrenoms, tableau[i].matricule, tableau[i].age
+                    " %.2lf\t  %.0lf\t  %.0lf\n", tableau[i].nomPrenoms, tableau[i].matricule, tableau[i].age
                                                           , tableau[i].email, tableau[i].tabDonnees[0], tableau[i].tabDonnees[1]
                                                           , tableau[i].tabDonnees[2], tableau[i].tabDonnees[3], tableau[i].tabDonnees[4]
                                                           , tableau[i].tabDonnees[5], tableau[i].tabDonnees[6] );
