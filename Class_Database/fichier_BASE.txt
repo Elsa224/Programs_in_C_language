@@ -1,0 +1,4 @@
+Ametchi_Liam		ENSIT_200	19	ametchiliam2020@gmail.com	17.00	14.00	19.25	13.00	15.81	0	0
+Domoa_Marlon		ENSIT_202	20	domoamarlon2020@gmail.com	16.00	14.50	13.00	13.00	14.13	0	0
+Memel_Akpa_Joel		ENSIT_201	25	memelakpajoel20@yahoo.org	19.00	15.00	16.50	15.00	16.38	0	0
+Zougouri_Elsa		ENSIT_208	18	elsazougouri224@gmail.com	18.00	17.25	12.00	13.00	15.06	0	0
