@@ -20,13 +20,12 @@ typedef struct etudiant
 double average(int taille, float tableau[]);
 void triBulleAlphabetique(int taille, etudiant tableau[]);
 void triBulleMoyenne(int taille, etudiant tableau[]);
-void verificationAjout();
 
 void creationFichier(FILE *pointeurFichier, etudiant tableau[], int taille);
 void lectureFichier(FILE *pointeurFichier, etudiant tableau[], int taille);
 void creationFICH_VRAC(FILE *pointeurFichier, etudiant tableau[]);
-void creationFICH_BASE(FILE *pointeurFichier, etudiant tableau[], int taille);
-void creationFICH_FINAL(FILE *pointeurFichier, etudiant tableau[], int taille);
+void creationFICH_BASE(FILE *pointeurFichier, etudiant tableau[]);
+void creationFICH_FINAL(FILE *pointeurFichier, etudiant tableau[]);
 void ajoutEtudiant(FILE *pointeurFichier, etudiant tableau[]);
 void correctionEmail(FILE *pointeurFichier, etudiant tableau[], int taille);
 
@@ -36,7 +35,7 @@ char menuDeTravail();
 //Déclaration des variables globales
 FILE *fichierBD_initial;
 int i, j, k = 1, nbNotes = 4;
-char choixMenu, answer[4];
+char choixMenu;
 etudiant prepa2[TAILLE_N], prepa2Ajout[TAILLE_N + 1];
 
 //Fonction moyenne
@@ -90,12 +89,16 @@ void triBulleMoyenne(int taille, etudiant tableau[]) //Procédure de tri
         }
     }
     for (i = 0; i < taille; i++) //Pour avoir le rang
-        {tableau[i].tabDonnees[5] = i + 1;}
+    {
+        tableau[i].tabDonnees[5] = i + 1;
+    }
 
     for (i = 0; i < taille; i++)
     {
         if (tableau[i].tabDonnees[4] == tableau[i + 1].tabDonnees[4]) //Pour les ex-aequo
-            {tableau[i + 1].tabDonnees[5] = tableau[i].tabDonnees[5];}
+        {
+            tableau[i + 1].tabDonnees[5] = tableau[i].tabDonnees[5];
+        }
     }
 }
 
@@ -174,7 +177,9 @@ void lectureFichier(FILE *pointeurFichier, etudiant tableau[], int taille)
         //Affichage
         for (i = 0; i < taille; i++)
         {
-            printf("%s\t\t%s\t%d\t%s\t%.2lf\t%.2lf\t%.2lf\t%.2lf\t%.2lf\t%.0lf\t%.0lf\n",
+            printf("%s\t\t%s\t%d\t%s\t"
+                   "%.2lf\t%.2lf\t%.2lf\t%.2lf\t"
+                   "%.2lf\t%.0lf\t%.0lf\n",
                    tableau[i].nomPrenoms, tableau[i].matricule, tableau[i].age, tableau[i].email, tableau[i].tabDonnees[0], tableau[i].tabDonnees[1], tableau[i].tabDonnees[2], tableau[i].tabDonnees[3], tableau[i].tabDonnees[4], tableau[i].tabDonnees[5], tableau[i].tabDonnees[6]);
         }
     }
@@ -198,48 +203,48 @@ void creationFICH_VRAC(FILE *pointeurFichier, etudiant tableau[])
 } //fin de creationFICH_VRAC
 
 //Etape (ii) : création du fichier avec les noms rangés par ordre alphabétique
-void creationFICH_BASE(FILE *pointeurFichier, etudiant tableau[], int taille)
+void creationFICH_BASE(FILE *pointeurFichier, etudiant tableau[])
 {
     //lecture du fichier FICH_VRAC
     printf("\n\nLa saisie obtenue dans le fichier donne :\n\n");
     pointeurFichier = fopen("fichier_VRAC.txt", "r");
-    lectureFichier(pointeurFichier, tableau, taille);
+    lectureFichier(pointeurFichier, tableau, TAILLE_N);
 
     //Tri par ordre alphabétique
-    triBulleAlphabetique(taille, tableau);
+    triBulleAlphabetique(TAILLE_N, tableau);
 
     //Création du fichier FICH_BASE
     pointeurFichier = fopen("fichier_BASE.txt", "w");
-    creationFichier(pointeurFichier, tableau, taille);
+    creationFichier(pointeurFichier, tableau, TAILLE_N);
 
     //lecture du fichier FICH_BASE
     printf("\n\nLe tri par ordre alphabetique donne :\n\n");
     pointeurFichier = fopen("fichier_BASE.txt", "r");
-    lectureFichier(pointeurFichier, tableau, taille);
+    lectureFichier(pointeurFichier, tableau, TAILLE_N);
 }
 
 //Etape (iii) : création du fichier avec les noms rangés par ordre alphabétique et la colonne de rang
-void creationFICH_FINAL(FILE *pointeurFichier, etudiant tableau[], int taille)
+void creationFICH_FINAL(FILE *pointeurFichier, etudiant tableau[])
 {
     //lecture du fichier FICH_BASE
     printf("\n\nOn lit encore le fichier rangé :\n\n");
     pointeurFichier = fopen("fichier_BASE.txt", "r");
-    lectureFichier(pointeurFichier, tableau, taille);
+    lectureFichier(pointeurFichier, tableau, TAILLE_N);
 
     //Tri par la moyenne pour obtenir les rangs avec existence des ex-aequo s'il y a
-    triBulleMoyenne(taille, tableau);
+    triBulleMoyenne(TAILLE_N, tableau);
 
     //Tri par ordre alphabétique
-    triBulleAlphabetique(taille, tableau);
+    triBulleAlphabetique(TAILLE_N, tableau);
 
     //Création du fichier FICH_FINAL
     pointeurFichier = fopen("fichier_FINAL.txt", "w");
-    creationFichier(pointeurFichier, tableau, taille);
+    creationFichier(pointeurFichier, tableau, TAILLE_N);
 
     //Lecture du fichier FICH_FINAL
-    printf("\n\nApres toutes les modifications apportees, le fichier final donne :\n\n");
+    printf("\n\nLe fichier range selon l'ordre alphabetique et le rang renseigne donne :\n\n");
     pointeurFichier = fopen("fichier_FINAL.txt", "r");
-    lectureFichier(pointeurFichier, tableau, taille);
+    lectureFichier(pointeurFichier, tableau, TAILLE_N);
 }
 
 // Choix 2 : ajouter un étudiant
@@ -270,12 +275,12 @@ void ajoutEtudiant(FILE *pointeurFichier, etudiant tableau[])
     triBulleAlphabetique(TAILLE_N + 1, tableau);
 
     //Création du fichier FICH_BASE avec ajout
-    pointeurFichier = fopen("fichier_BASE.txt", "w");
+    pointeurFichier = fopen("fichier_BASE_AJOUT.txt", "w");
     creationFichier(pointeurFichier, tableau, TAILLE_N + 1);
 
     //lecture du fichier FICH_BASE avec ajout
     printf("\n\nLe tri par ordre alphabetique avec l'ajout donne :\n\n");
-    pointeurFichier = fopen("fichier_BASE.txt", "r");
+    pointeurFichier = fopen("fichier_BASE_AJOUT.txt", "r");
     lectureFichier(pointeurFichier, tableau, TAILLE_N + 1);
 }
 
@@ -317,12 +322,12 @@ void correctionEmail(FILE *pointeurFichier, etudiant tableau[], int taille)
                 strcpy(tableau[i].email, emailCorrigee);
 
                 //Création du fichier FICH_BASE_EMAIL_CORRIGEE
-                pointeurFichier = fopen("fichier_BASE.txt", "w");
+                pointeurFichier = fopen("fichier_BASE_EMAIL.txt", "w");
                 creationFichier(pointeurFichier, tableau, taille);
 
                 //Lecture du fichier FICH_BASE_...
                 printf("\n\nApres correction de l'email, on a :\n\n");
-                pointeurFichier = fopen("fichier_BASE.txt", "r");
+                pointeurFichier = fopen("fichier_BASE_EMAIL.txt", "r");
                 lectureFichier(pointeurFichier, tableau, taille);
             }
             else
@@ -330,14 +335,6 @@ void correctionEmail(FILE *pointeurFichier, etudiant tableau[], int taille)
                 //Ajouter ma fonction retour
         }
     }
-}
-
-void verificationAjout()
-{
-    system("clear"); printf("\n\tAviez-vous au prealable ajoute un etudiant ? (\"oui\"/\"non\"): "); 
-    scanf("%s", answer);
-    while (strcmp(answer, "oui") != 0 && strcmp(answer, "non") != 0)
-        {printf("\n\n\tVeuillez recommencer s'il vous plait : "); scanf("%s", answer);}
 }
 
 //Le menu
