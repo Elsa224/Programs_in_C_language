@@ -25,8 +25,18 @@ void lectureFichier(FILE *pointeurFichier, etudiant tableau[], int taille);
 void creationFICH_VRAC(FILE *pointeurFichier, etudiant tableau[]);
 void creationFICH_BASE(FILE *pointeurFichier, etudiant tableau[]);
 void creationFICH_FINAL(FILE *pointeurFichier, etudiant tableau[]);
-
 char menuDeTravail();
+
+int nbStudentInFile(const char* filename);
+void add_a_student(const char* filename);
+void createFICH_VRAC(const char* filename);
+void createFICH_BASE(const char* filename,int taille);
+//void createFICH_FINAL(const char* filename);
+void scanf_student(etudiant* tmp);
+void insertStudentInFile(etudiant tmp, const char* filename);
+void read_info_from_file(const char* filename, etudiant* etudiant,int taille);
+
+
 //------------------------------------------------------------------------//
 
 //Déclaration des variables globales
@@ -37,7 +47,7 @@ char choixMenu; etudiant prepa2[TAILLE_N];
 //Fonction moyenne
 double average(int taille, float tableau[]){
     int i;
-    double somme = 0, moy;
+    float somme = 0.0, moy;
     for (i = 0; i < taille; i++)
     {
         somme = somme + tableau[i];
@@ -130,8 +140,7 @@ void saisieEtudiant(etudiant tableau[], int taille){
 }
 
 //Procédure de création d'un fichier
-void creationFichier(FILE *pointeurFichier, etudiant tableau[], int taille)
-{
+void creationFichier(FILE *pointeurFichier, etudiant tableau[], int taille){
     for ( i = 0; i < taille; i++)
         {  
             //Création de la BD
@@ -182,8 +191,7 @@ void lectureFichier(FILE *pointeurFichier, etudiant tableau[], int taille){
 } //fin de lecture FICHIER
 
 ///Etape (i) : création de FICH_VRAC
-void creationFICH_VRAC(FILE *pointeurFichier, etudiant tableau[])
-{
+void creationFICH_VRAC(FILE *pointeurFichier, etudiant tableau[]){
     //Partie saisie dans la console
     saisieEtudiant(tableau, TAILLE_N);
 
@@ -198,6 +206,7 @@ void creationFICH_VRAC(FILE *pointeurFichier, etudiant tableau[])
 
 
 }   //fin de creationFICH_VRAC
+
 
 //Etape (ii) : création du fichier avec les noms rangés par ordre alphabétique
 void creationFICH_BASE(FILE *pointeurFichier, etudiant tableau[])
@@ -221,8 +230,7 @@ void creationFICH_BASE(FILE *pointeurFichier, etudiant tableau[])
 }
 
 //Etape (iii) : création du fichier avec les noms rangés par ordre alphabétique et la colonne de rang
-void creationFICH_FINAL(FILE *pointeurFichier, etudiant tableau[])
-{
+void creationFICH_FINAL(FILE *pointeurFichier, etudiant tableau[]){
     //lecture du fichier FICH_BASE
     printf("\n\nOn lit encore le fichier rangé :\n\n");
     pointeurFichier = fopen("fichier_BASE.txt", "r");
@@ -244,42 +252,12 @@ void creationFICH_FINAL(FILE *pointeurFichier, etudiant tableau[])
     lectureFichier(pointeurFichier, tableau, TAILLE_N);
 }
 
-// Choix 2 : ajouter un étudiant
-void ajoutEtudiant(FILE *pointeurFichier, etudiant tableau[])
-{
-    //Partie saisie dans la console
-    //saisieEtudiant(tableau, 1); //parce qu'on va ajouter 1 seul étudiant
-
-    //Insertion du nouvel étudiant dans le tableau
-    tabTaille = TAILLE_N + 1;
-
-    //Ouverture du fichier FICH_BASE pour ajout
-    //pointeurFichier = fopen("fichier_BASE.txt", "a");
-    //*creationFichier(pointeurFichier, tableau, 1);
-
-    //Lecture et affichage du fichier créé
-    printf("\n\nLa saisie obtenue est la suivante :\n\n");
-    pointeurFichier = fopen("fichier_BASE.txt", "r" );
-    lectureFichier(pointeurFichier, tableau, tabTaille);
-
-    //Tri par ordre alphabétique
-    triBulleAlphabetique(tabTaille, tableau);
-
-    //Création du fichier FICH_BASE avec ajout
-    pointeurFichier = fopen("fichier_BASE_AJOUT.txt", "w");
-    creationFichier(pointeurFichier, tableau, tabTaille);
-
-    //lecture du fichier FICH_BASE avec ajout
-    printf("\n\nLe tri par ordre alphabetique avec l'ajout donne :\n\n");
-    pointeurFichier = fopen("fichier_BASE_AJOUT.txt", "r");
-    lectureFichier(pointeurFichier, tableau, tabTaille);
-}
-
 //Tout d'abord le menu
 char menuDeTravail(){
 
     //Affichage du menu de travail
     system("clear");
+    printf("TAILLE_N = %d\n\n",TAILLE_N);
     system("color 0e");
     printf("\n\t\tBonjour et bienvenue dans le programme de gestion des etudiants de l'ENSIT!"
                     "\n\tQue souhaitez-vous faire?\n"
@@ -301,4 +279,159 @@ char menuDeTravail(){
 
     //Si jamais l'on retourne un caractère c'est parce que l'utilisateur a sélectionné l'une des options proposées
     return choixMenu;
+}
+
+
+
+
+void scanf_student(etudiant* tmp){
+    strcpy(tmp->matricule, "ENSIT_"); //Initialisation des 6 premiers char du matricule
+            system("clear");
+            printf("\nEtudiant n* %d : \n\t", i + 1);
+            printf("Saisissez les nom et prenom s'il vous plait (ex: Ametchi_Liam) : ");
+            scanf("%s", tmp->nomPrenoms);
+            printf("\tMatricule : \"ENSIT_***\". Saisissez les 3 derniers chiffres (\"***\") du matricule s'il vous plait : ");
+            char chiffreMatricule[4]; scanf("%s", chiffreMatricule); strcat(tmp->matricule, chiffreMatricule);
+            printf("\tSaisissez l'age s'il vous plait : ");
+            scanf("%d", &tmp->age);
+            do
+            {
+                printf("\tSaisissez l'email s'il vous plait (25 caracteres pas plus pas moins) : ");
+                scanf("%s", tmp->email);
+
+            } while (strlen(tmp->email) != 25);
+            
+            printf("\tSaisissez ses notes (AL, AN, E, P) s'il vous plait : \n");
+            for (j = 0; j < nbNotes; j++) //Il y a 4 notes
+            {
+                printf("\t\tNote n* %d : ", j + 1);
+                scanf("%f", &tmp->tabDonnees[j]);
+            }
+            //Calcul de la moyenne
+            tmp->tabDonnees[4] = average(nbNotes, tmp->tabDonnees);
+
+            printf("\n\tSaisissez le statut (\"1\" pour Redoublant et \"0\" pour Passant ) s'il vous plait : ");
+            scanf("%f", &tmp->tabDonnees[6]);
+}
+
+// Etape 2 : Ajout Etudiant
+void add_a_student(const char* filename){
+    int nbEnregistrement = TAILLE_N;
+    FILE* fichier = fopen(filename, "a"); // Ouverture du fichier en mode ajout
+    if(fichier == NULL)
+        printf("Erreur lors de la lecture du fichier");
+    else{
+        etudiant tmp;
+        tmp.tabDonnees[5] = 0; // Initialisation du rang à 0;
+        scanf_student(&tmp);
+        printf("Après l'appel de de scanf_, on a : \n\n%s\t\t%s\t%d\t%s\t"
+                                     "%.2lf\t%.2lf\t%.2lf\t%.2lf\t"
+                                     "%.2lf\t%.0lf\t%.0lf\n", tmp.nomPrenoms, tmp.matricule, tmp.age
+                                                            , tmp.email, tmp.tabDonnees[0], tmp.tabDonnees[1]
+                                                            , tmp.tabDonnees[2], tmp.tabDonnees[3], tmp.tabDonnees[4]
+                                                            , tmp.tabDonnees[5], tmp.tabDonnees[6] );
+       
+        fprintf(fichier, "%s\t\t%s\t%d\t%s\t"
+                                     "%.2lf\t%.2lf\t%.2lf\t%.2lf\t"
+                                     "%.2lf\t%.0lf\t%.0lf\n", tmp.nomPrenoms, tmp.matricule, tmp.age
+                                                            , tmp.email, tmp.tabDonnees[0], tmp.tabDonnees[1]
+                                                            , tmp.tabDonnees[2], tmp.tabDonnees[3], tmp.tabDonnees[4]
+                                                            , tmp.tabDonnees[5], tmp.tabDonnees[6] );
+    }
+
+    fclose(fichier);//fermeture du fichier
+}
+
+int nbStudentInFile(const char* filename){
+    FILE* fichier = fopen(filename,"r"); // Ouverture du fichier en mode lecture
+    int nbStudent = 0;
+
+    if(fichier == NULL){
+        printf("Erreur lors de la lecture du fichier");
+        exit(-1); // quitte le programme avec comme id 0 comme return 0
+    }else{
+        rewind(fichier);
+        
+        etudiant tmp;
+        fscanf(fichier, "%s\t\t%s\t%d\t%s\t%g\t%g\t%g\t%g\t%g\t%g\t%g\n"
+                                  , tmp.nomPrenoms, tmp.matricule, &tmp.age
+                                  , tmp.email, &tmp.tabDonnees[0], &tmp.tabDonnees[1]
+                                  , &tmp.tabDonnees[2], &tmp.tabDonnees[3], &tmp.tabDonnees[4]
+                                  , &tmp.tabDonnees[5], &tmp.tabDonnees[6] );
+        nbStudent += 1;
+
+    
+    }
+
+    return nbStudent;
+    
+}
+
+void read_info_from_file(const char* filename,etudiant* tmp,int taille){
+    //tmp = NULL; //Initialisation d'un tableau vide
+    FILE* fichier = fopen(filename,"r");
+    if(fichier == NULL)
+        printf("Erreur lors de la lecture du fichier");
+    else{
+        
+       // tmp = malloc(taille * sizeof(etudiant)); // Allocation d'un tableau de TAILLE_N etudiants
+        for(int i = 0; i < taille; i++){
+            fscanf(fichier, "%s\t\t%s\t%d\t%s\t%g\t%g\t%g\t%g\t%g\t%g\t%g\n"
+                                    , tmp[i].nomPrenoms, tmp[i].matricule, &tmp[i].age
+                                    , tmp[i].email, &tmp[i].tabDonnees[0], &tmp[i].tabDonnees[1]
+                                    , &tmp[i].tabDonnees[2], &tmp[i].tabDonnees[3], &tmp[i].tabDonnees[4]
+                                    , &tmp[i].tabDonnees[5], &tmp[i].tabDonnees[6] );
+
+        }
+    }
+    
+
+}
+
+void createFICH_VRAC(const char* filename){
+    //FICH_VRAC est le fichier de début et par convention on débute avec 10 étudiants TAILLE_N
+    for (i = 0; i < TAILLE_N/5; i++)
+        add_a_student(filename);     
+} 
+
+void createFICH_BASE(const char* filename,int taille){
+    //Le second fichier trié par ordre alphabétique
+    FILE* fichier = fopen(filename,"w");
+    if(fichier == NULL){
+        printf("Erreur lors de la création du fichier");
+        exit(-1); //Quitte le programme
+    }else{
+        //int nbEnregistrement = nbStudentInFile(filename);
+        read_info_from_file("fichier_VRAC1.txt",prepa2,taille);
+        triBulleAlphabetique(taille,prepa2);
+
+        for(i = 0; i < taille; i++){
+            printf("tmp[i].nom = %s", prepa2[i].nomPrenoms);
+            insertStudentInFile(prepa2[i],filename);
+        }
+    }
+} 
+void createFICH_FINAL(){
+    printf("Boo");
+    int nbStudent = nbStudentInFile("fichier_VRAC1.txt");
+    printf("nbStudent = %d\n",nbStudent);
+}
+
+void insertStudentInFile(etudiant tmp, const char* filename){
+     //This function is to add directly the tmp etudiant in the file "filename"
+    FILE* fichier = fopen(filename,"a"); // Opening the file in the append mode
+
+    if(fichier == NULL){
+        printf("Erreur lors de la création du fichier, Fermeture du programme…\n");
+        fclose(fichier);
+        exit(-1);
+    }else{
+        fprintf(fichier, "%s\t\t%s\t%d\t%s\t"
+                                     "%.2lf\t%.2lf\t%.2lf\t%.2lf\t"
+                                     "%.2lf\t%.0lf\t%.0lf\n", tmp.nomPrenoms, tmp.matricule, tmp.age
+                                                            , tmp.email, tmp.tabDonnees[0], tmp.tabDonnees[1]
+                                                            , tmp.tabDonnees[2], tmp.tabDonnees[3], tmp.tabDonnees[4]
+                                                            , tmp.tabDonnees[5], tmp.tabDonnees[6] );
+    }
+    fclose(fichier);
 }
