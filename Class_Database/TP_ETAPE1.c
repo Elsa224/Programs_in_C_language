@@ -1,34 +1,34 @@
 /*TP final : Gestion d'une classe étudiants en utilisant une base de données (fichiers)*/
 
 #include "variables_functions.h"
-
+const char* fichVRAC = "fichier_VRAC1.txt";
+const char* fichBASE = "fichier_BASE1.txt";
+const char* fichFINAL = "fichier_FINAL.txt";
 
 ///Etape (i) : Création de la BD de 10 étudiants dans un fichier
 int main(int argc, char const *argv[])
 {
-    char result = menuDeTravail(), answer[4];
+
+    char result = menuDeTravail();
     //Ensuite mettre les procédures des différentes tâches
     switch (result)
     {
     case '1':
         //creationFICH_VRAC(fichierBD_initial, prepa2);
-        creationFICH_BASE(fichierBD_initial, prepa2);
-        creationFICH_FINAL(fichierBD_initial, prepa2);
+        createFICH_BASE(fichBASE,TAILLE_N/5);
+        //createFICH_VRAC(fichVRAC);
+        //creationFICH_BASE(fichierBD_initial, prepa2);
+        //creationFICH_FINAL(fichierBD_initial, prepa2);
         break;
     case '2':
-        ajoutEtudiant(fichierBD_initial, prepa2Ajout);
+         add_a_student(fichVRAC);// Ajout d'un étudiant dans le fichier VRAC
+         createFICH_BASE(fichBASE, ((TAILLE_N/5) +1)); // on l'ajoute également dans fich BASE
         break;
     case '3':
-        system("clear"); printf("\n\tAviez-vous au prealable ajoute un etudiant ? (\"oui\"/\"non\"): "); 
-        scanf("%s", answer);
-        while (strcmp(answer, "oui") != 0 && strcmp(answer, "non") != 0)
-            {printf("\n\n\tVeuillez recommencer s'il vous plait : "); scanf("%s", answer);}
-        if (strcmp(answer, "oui") == 0)
-            {correctionEmail(fichierBD_initial, prepa2Ajout, TAILLE_N+1);}
-        else
-            {correctionEmail(fichierBD_initial, prepa2, TAILLE_N);}
+        //correctionE_mail();
         break;
     case '4':
+        //createFICH_FINAL(); // Et aussi dans le fichier FINAL
         //creationFichierFinal();
         break;
 

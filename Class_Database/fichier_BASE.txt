@@ -8,4 +8,4 @@ Ouedraogo_Isma		ENSIT_211	19	ismaelouedraogo@ymail.com	18.00	17.25	12.00	13.00	1
 Oura_Max_Joel		ENSIT_207	26	maxjoeloura1999@gmail.com	10.00	19.00	17.25	18.00	16.06	0	0
 Tati_Paul_Marie		ENSIT_888	21	tatipaulmarie22@gmail.com	18.00	17.25	12.00	13.00	15.06	0	1
 Zougouri_Elsa		ENSIT_208	18	elsazougouri224@gmail.com	18.00	17.25	12.00	13.00	15.06	0	0
-Soumahoro_Siri		ENSIT_219	19	soumahorosiriki@yahoo.org	19.00	17.25	16.50	13.00	16.44	0	0
+Soumahoro_Sirik     ENSIT_210   19  soumahorosiriki@yahoo.org   19.25   17.00   17.00   13.00   16.56   0   1
