@@ -14,11 +14,9 @@ int main(int argc, char const *argv[])
     switch (result)
     {
     case '1':
-        //creationFICH_VRAC(fichierBD_initial, prepa2);
+        createFICH_VRAC(fichVRAC);
         createFICH_BASE(fichBASE,TAILLE_N/5);
-        //createFICH_VRAC(fichVRAC);
-        //creationFICH_BASE(fichierBD_initial, prepa2);
-        //creationFICH_FINAL(fichierBD_initial, prepa2);
+        
         break;
     case '2':
          add_a_student(fichVRAC);// Ajout d'un étudiant dans le fichier VRAC
@@ -28,8 +26,7 @@ int main(int argc, char const *argv[])
         //correctionE_mail();
         break;
     case '4':
-        //createFICH_FINAL(); // Et aussi dans le fichier FINAL
-        //creationFichierFinal();
+        createFICH_FINAL(); // Et aussi dans le fichier FINAL. Pas encore terminé
         break;
 
     default:

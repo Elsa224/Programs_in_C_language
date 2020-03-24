@@ -283,7 +283,9 @@ char menuDeTravail(){
 
 
 
-
+//TODO penser d'abord à déterminer s'il s'agit de la première fois que l'on exécute ce programme 
+//De sorte à utiliser TAILLE_N sinon utiliser nbStudenInFile afin de déterminer le nb d'étudiants
+//Comment est-ce possible de savoir cela? Si le fichier VRAC existe alors le code a été exécuté au moins une fois
 void scanf_student(etudiant* tmp){
     strcpy(tmp->matricule, "ENSIT_"); //Initialisation des 6 premiers char du matricule
             system("clear");
@@ -350,18 +352,21 @@ int nbStudentInFile(const char* filename){
         printf("Erreur lors de la lecture du fichier");
         exit(-1); // quitte le programme avec comme id 0 comme return 0
     }else{
-        rewind(fichier);
-        
-        etudiant tmp;
-        fscanf(fichier, "%s\t\t%s\t%d\t%s\t%g\t%g\t%g\t%g\t%g\t%g\t%g\n"
-                                  , tmp.nomPrenoms, tmp.matricule, &tmp.age
-                                  , tmp.email, &tmp.tabDonnees[0], &tmp.tabDonnees[1]
-                                  , &tmp.tabDonnees[2], &tmp.tabDonnees[3], &tmp.tabDonnees[4]
-                                  , &tmp.tabDonnees[5], &tmp.tabDonnees[6] );
-        nbStudent += 1;
-
-    
+        //rewind(fichier);
+        while( !feof(fichier)){
+            char *buffer = (char*) malloc(10*sizeof(etudiant));
+            fgets(buffer,10*sizeof(etudiant),fichier);
+            if(strcmp("",buffer) == 0)
+                break;
+            else{
+            //printf("buffer = %s\n",buffer);
+            nbStudent += 1;
+            free(buffer); // Libération de la mémoire allouée à buffer
+            }
+        }
     }
+    //Si jamais cette phrase est affichée alors la fonction s'est bien exécutée
+    printf("nbStudentInFile invoked\n");
 
     return nbStudent;
     
@@ -385,7 +390,7 @@ void read_info_from_file(const char* filename,etudiant* tmp,int taille){
         }
     }
     
-
+    printf("read_info_from_file invoked\n");
 }
 
 void createFICH_VRAC(const char* filename){
@@ -412,9 +417,10 @@ void createFICH_BASE(const char* filename,int taille){
     }
 } 
 void createFICH_FINAL(){
-    printf("Boo");
-    int nbStudent = nbStudentInFile("fichier_VRAC1.txt");
+    printf("Boo\n");
+    int nbStudent = nbStudentInFile("fichier_BASE.txt");
     printf("nbStudent = %d\n",nbStudent);
+    printf("createFICH_FINAL invoked\n");
 }
 
 void insertStudentInFile(etudiant tmp, const char* filename){
