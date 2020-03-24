@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #define TAILLE_N 10 //N = 10 
 #define NOM_PRENOM_LENGTH 22 
 #define EMAIL_LENGTH 27 
@@ -31,11 +32,11 @@ int nbStudentInFile(const char* filename);
 void add_a_student(const char* filename);
 void createFICH_VRAC(const char* filename);
 void createFICH_BASE(const char* filename,int taille);
-//void createFICH_FINAL(const char* filename);
+void createFICH_FINAL(const char* filename);
 void scanf_student(etudiant* tmp);
 void insertStudentInFile(etudiant tmp, const char* filename);
 void read_info_from_file(const char* filename, etudiant* etudiant,int taille);
-
+bool doesFileExist(const char* filename);
 
 //------------------------------------------------------------------------//
 
@@ -209,8 +210,7 @@ void creationFICH_VRAC(FILE *pointeurFichier, etudiant tableau[]){
 
 
 //Etape (ii) : création du fichier avec les noms rangés par ordre alphabétique
-void creationFICH_BASE(FILE *pointeurFichier, etudiant tableau[])
-{
+void creationFICH_BASE(FILE *pointeurFichier, etudiant tableau[]){
     //lecture du fichier FICH_VRAC
     printf("\n\nLa saisie obtenue dans le fichier donne :\n\n");
     pointeurFichier = fopen("fichier_VRAC.txt", "r");
@@ -416,11 +416,19 @@ void createFICH_BASE(const char* filename,int taille){
         }
     }
 } 
-void createFICH_FINAL(){
-    printf("Boo\n");
-    int nbStudent = nbStudentInFile("fichier_BASE.txt");
-    printf("nbStudent = %d\n",nbStudent);
-    printf("createFICH_FINAL invoked\n");
+void createFICH_FINAL(const char* filname){
+    //Pour créer le fichier FINAL on vérifie l'existence de fich BASE car si Fich Base existe alors fich VRAC existe
+    bool fileExists = doesFileExist("fichier_BASE1.txt");
+    if(fileExists){
+        printf("Boo\n");
+        int nbStudent = nbStudentInFile("fichier_BASE1.txt");
+        printf("nbStudent = %d\n",nbStudent);
+        printf("createFICH_FINAL invoked\n");
+    }
+    else{
+        printf("Veuillez d'abord creer les fichiers VRAC et BASE\n");
+        exit(-2);
+    }
 }
 
 void insertStudentInFile(etudiant tmp, const char* filename){
@@ -440,4 +448,12 @@ void insertStudentInFile(etudiant tmp, const char* filename){
                                                             , tmp.tabDonnees[5], tmp.tabDonnees[6] );
     }
     fclose(fichier);
+}
+
+bool doesFileExist(const char* filename){
+    FILE* fichier = fopen(filename,"r");
+    if(fichier == NULL)
+        return false;
+    else
+        return true;
 }

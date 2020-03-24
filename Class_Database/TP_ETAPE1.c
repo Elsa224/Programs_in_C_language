@@ -3,7 +3,7 @@
 #include "variables_functions.h"
 const char* fichVRAC = "fichier_VRAC1.txt";
 const char* fichBASE = "fichier_BASE1.txt";
-const char* fichFINAL = "fichier_FINAL.txt";
+const char* fichFINAL = "fichier_FINAL1.txt";
 
 ///Etape (i) : Création de la BD de 10 étudiants dans un fichier
 int main(int argc, char const *argv[])
@@ -26,7 +26,7 @@ int main(int argc, char const *argv[])
         //correctionE_mail();
         break;
     case '4':
-        createFICH_FINAL(); // Et aussi dans le fichier FINAL. Pas encore terminé
+        createFICH_FINAL(fichFINAL); // Et aussi dans le fichier FINAL. Pas encore terminé
         break;
 
     default:
