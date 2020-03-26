@@ -1,6 +1,9 @@
 /*TP final : Gestion d'une classe étudiants en utilisant une base de données (fichiers)*/
 
-#include "variables_functions-1.h"
+#include "variables_functions_ok.h"
+const char* fichVRAC = "fichier_VRAC.txt";
+const char* fichBASE = "fichier_BASE.txt";
+const char* fichFINAL = "fichier_FINAL.txt";
 
 ///Etape (i) : Création de la BD de 10 étudiants dans un fichier
 int main(int argc, char const *argv[])
@@ -10,28 +13,20 @@ int main(int argc, char const *argv[])
     switch (result)
     {
     case '1':
-        creationFICH_VRAC(fichierBD_initial, prepa2);
-        creationFICH_BASE(fichierBD_initial, prepa2, TAILLE_N);
+        //creationFICH_VRAC(fichierBD_initial, prepa2);
+        creationFICH_BASE(fichierBD_initial, prepa2, nbStudentInFile("fichier_VRAC.txt"));
         break;
 
     case '2':
-        ajoutEtudiant(fichierBD_initial, prepa2Ajout);
+        ajoutEtudiant(fichierBD_initial, prepa2, nbStudentInFile("fichier_BASE.txt"));
         break;
 
     case '3':
-        verificationAjout();
-        if (strcmp(answer, "oui") == 0)
-            {correctionEmail(fichierBD_initial, prepa2Ajout, TAILLE_N+1);}
-        else
-            {correctionEmail(fichierBD_initial, prepa2, TAILLE_N);}
+        correctionEmail(fichierBD_initial, prepa2, nbStudentInFile("fichier_BASE.txt"));
         break;
         
     case '4':
-        verificationAjout();
-        if (strcmp(answer, "oui") == 0)
-            {creationFICH_FINAL(fichierBD_initial, prepa2Ajout, TAILLE_N+1);}
-        else
-            {creationFICH_FINAL(fichierBD_initial, prepa2, TAILLE_N);}
+        creationFICH_FINAL(fichierBD_initial, prepa2,nbStudentInFile("fichier_BASE.txt") );
         break;
 
     default:
