@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define TAILLE_N 50 //N = 10
-#define NOM_PRENOM_LENGTH 22
-#define EMAIL_LENGTH 27
+#define TAILLE_N 50 //N = 10 = TAILLE_N/5
+#define NOM_PRENOM_LENGTH 30 
+#define EMAIL_LENGTH 30
 #define MATRICULE_LENGTH 11
 
 //Déclaration des noms des fichiers
@@ -20,7 +20,7 @@ typedef struct etudiant
     char matricule[MATRICULE_LENGTH];
     int age;
     char email[EMAIL_LENGTH];
-    float tabDonnees[7]; //Ici il y' aura les 4 notes, la moyenne, le rang et le statut de l'édutiant (Redoublant(1) ou Passant(0))
+    float tabDonnees[7]; //Ici il y' aura les 4 notes, la moyenne, le rang et le statut de l'étudiant (Redoublant(1) ou Passant(0))
 } etudiant;
 
 //-----------------Prototypes des fonctions--------------------------------//
@@ -29,6 +29,7 @@ int nbStudentInFile(const char* filename);
 void triBulleAlphabetique(int taille, etudiant tableau[]);
 void triBulleMoyenne(int taille, etudiant tableau[]);
 
+void saisieEtudiant(etudiant tableau[], int taille);
 void creationFichier(FILE *pointeurFichier, etudiant tableau[], int taille);
 void lectureFichier(FILE *pointeurFichier, etudiant tableau[], int taille);
 void copieFichier(const char* fileToCopy, const char* fileDestination);
@@ -42,9 +43,9 @@ char menuDeTravail();
 //------------------------------------------------------------------------//
 
 //Déclaration des variables globales
-FILE *fichierBD_initial;
+FILE *fichierBD;
 int i, j, k = 1, nbNotes = 4;
-char choixMenu, answer[4];
+char choixMenu;
 etudiant prepa2[TAILLE_N];
 
 //Fonction moyenne
@@ -142,7 +143,7 @@ void copieFichier(const char* fileToCopy, const char* fileDestination)
     // ouvrir le fichier destination en écriture
     pointeurFichier2 = fopen(fileDestination, "w");
 
-    // Lire le contenu du fichier
+    // Lire le contenu du fichier et copie
     while((ch = getc(pointeurFichier1)) != EOF)
         putc(ch, pointeurFichier2);
 
@@ -175,8 +176,11 @@ void saisieEtudiant(etudiant tableau[], int taille)
         //Calcul de la moyenne
         tableau[i].tabDonnees[4] = average(nbNotes, tableau[i].tabDonnees);
 
-        printf("\n\tSaisissez le statut (\"1\" pour Redoublant et \"0\" pour Passant ) s'il vous plait : ");
-        scanf("%f", &tableau[i].tabDonnees[6]);
+        //Détermination du statut à partir de la moyenne
+        if (tableau[i].tabDonnees[4] < (float)10)
+            tableau[i].tabDonnees[6] = (float)1; //Il redouble si sa moyenne est inférieure à 10
+        else
+           tableau[i].tabDonnees[6] = (float)0; //Il passe sinon
     }
 }
 
@@ -272,14 +276,13 @@ void creationFICH_FINAL(FILE *pointeurFichier, etudiant tableau[], int taille)
     pointeurFichier = fopen(fichFINAL, "w");
     creationFichier(pointeurFichier, tableau, taille);
 
-    //Copie du fichier BASE dans un autre
+    //Copie du fichier FINAL dans un autre
     copieFichier(fichFINAL, fichFINAL_old);
 
     //Lecture du fichier FICH_FINAL
     printf("\n\nApres toutes les modifications apportees, le fichier final donne :\n\n");
     pointeurFichier = fopen(fichFINAL, "r");
     lectureFichier(pointeurFichier, tableau, taille);
-
 }
 
 // Choix 2 : ajouter un étudiant
@@ -298,7 +301,6 @@ void ajoutEtudiant(FILE *pointeurFichier, etudiant tableau[], int taille)
 
     //Ouverture du fichier FICH_BASE pour ajout
     pointeurFichier = fopen(fichBASE, "a+");
-    //fprintf(pointeurFichier, "\n");
     creationFichier(pointeurFichier, tableau, 1);
 
     //Lecture et affichage du fichier créé
