@@ -1,6 +1,7 @@
 Après "audition" avec M. Randrianandrasana, il a remarqué une chose importante que je ne fais pas:
 LE CONTRÔLE DE SAISIE!!!!
-Il y a beauvcoup de contrôle que je ne fais pas et je suis sûre qu'il me fera des points en moins. HUM.
+Il y a beaucoup de contrôle que je ne fais pas et je suis sûre qu'il me fera des points en moins. HUM.
+Ce qui fait mal même c'est que j'y avais pensé.
 Voici les plus importants:
 	-Vérifier, à la saisie, que l'adresse mail contient '@' et "(...).com"
 	-Vérifier, à la saisie, que les notes sont comprises entre 0 et 20
