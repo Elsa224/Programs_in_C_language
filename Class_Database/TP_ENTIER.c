@@ -24,6 +24,10 @@ int main(int argc, char const *argv[])
         case '4': //Créer FICHIER_FINAL
             creationFICH_FINAL(fichierBD, prepa2,nbStudentInFile(fichBASE));
         break;
+
+        case '5': //Quitter le programme
+            printf("\n\n\t\t\tMerci pour votre participation! A bientot :) :)\n\n");
+        break;
     }
     return 0;
 }
