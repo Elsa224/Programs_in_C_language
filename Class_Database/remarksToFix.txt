@@ -1,0 +1,13 @@
+Après "audition" avec M. Randrianandrasana, il a remarqué une chose importante que je ne fais pas:
+LE CONTRÔLE DE SAISIE!!!!
+Il y a beauvcoup de contrôle que je ne fais pas et je suis sûre qu'il me fera des points en moins. HUM.
+Voici les plus importants:
+	-Vérifier, à la saisie, que l'adresse mail contient '@' et "(...).com"
+	-Vérifier, à la saisie, que les notes sont comprises entre 0 et 20
+	-Vérifier, à la saisie, que l'âge est compris entre 15 et 60 ans
+	-Vérifier, à l'affichage, que les données ne soient pas décalées pour éviter une fausse lecture
+	-Vérifier, à la saisie, que les matricules sont différents et que le premier chiffre est l'année d'étude en cours
+	-Dans l'option corriger adresse email, veuiller à saisir le matricule et non le nom pour se repérer
+
+Donc il sera question de revoir tout ça une prochaine fois. (Mon destin est déjà scellé. BRUH.) 
+
