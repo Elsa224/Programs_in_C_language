@@ -190,10 +190,22 @@ void creationFichier(FILE *pointeurFichier, etudiant tableau[], int taille)
     for (i = 0; i < taille; i++)
     {
         //Création de la BD
-        fprintf(pointeurFichier, "%s\t\t%s\t%d\t%s\t"
+        if ( i == taille-1) //Pour le dernier étudiant, on va éviter de faire un retour à la ligne
+        {
+            printf("\n\nJE rentre dans le if du sans retour à la ligne!!!:\n\n");   //PRINTF DE TTTTTEEESSSSTTTTTT//
+            fprintf(pointeurFichier, "%s\t\t%s\t%d\t%s\t"
+                                 "%.2lf\t%.2lf\t%.2lf\t%.2lf\t"
+                                 "%.2lf\t%.0lf\t%.0lf",
+                tableau[i].nomPrenoms, tableau[i].matricule, tableau[i].age, tableau[i].email, tableau[i].tabDonnees[0], tableau[i].tabDonnees[1], tableau[i].tabDonnees[2], tableau[i].tabDonnees[3], tableau[i].tabDonnees[4], tableau[i].tabDonnees[5], tableau[i].tabDonnees[6]);
+        }
+        else
+        {
+            fprintf(pointeurFichier, "%s\t\t%s\t%d\t%s\t"
                                  "%.2lf\t%.2lf\t%.2lf\t%.2lf\t"
                                  "%.2lf\t%.0lf\t%.0lf\n",
                 tableau[i].nomPrenoms, tableau[i].matricule, tableau[i].age, tableau[i].email, tableau[i].tabDonnees[0], tableau[i].tabDonnees[1], tableau[i].tabDonnees[2], tableau[i].tabDonnees[3], tableau[i].tabDonnees[4], tableau[i].tabDonnees[5], tableau[i].tabDonnees[6]);
+            
+        }
     }
     fclose(pointeurFichier);
 }
@@ -293,35 +305,38 @@ void ajoutEtudiant(FILE *pointeurFichier, etudiant tableau[], int taille)
     if (pointeurFichier == NULL)
     {
         printf("Desole, fichier introuvable. Veuillez d'abord creer le fichier avant de le lire!\n");
+        fclose(pointeurFichier);
     }
-    fclose(pointeurFichier);
 
-    //Partie saisie dans la console
-    saisieEtudiant(tableau, 1); //parce qu'on va ajouter 1 seul étudiant
+    else
+    {   
+        //Partie saisie dans la console
+        saisieEtudiant(tableau, 1); //parce qu'on va ajouter 1 seul étudiant
 
-    //Ouverture du fichier FICH_BASE pour ajout
-    pointeurFichier = fopen(fichBASE, "a+");
-    creationFichier(pointeurFichier, tableau, 1);
+        //Ouverture du fichier FICH_BASE pour ajout
+        pointeurFichier = fopen(fichBASE, "a+");
+        creationFichier(pointeurFichier, tableau, 1);
 
-    //Lecture et affichage du fichier créé
-    printf("\n\nLa saisie obtenue est la suivante :\n\n");
-    pointeurFichier = fopen(fichBASE, "r");
-    lectureFichier(pointeurFichier, tableau, nbStudentInFile(fichBASE));
+        //Lecture et affichage du fichier créé
+        printf("\n\nLa saisie obtenue est la suivante :\n\n");
+        pointeurFichier = fopen(fichBASE, "r");
+        lectureFichier(pointeurFichier, tableau, nbStudentInFile(fichBASE));
 
-    //Création du fichier FICH_BASE avec ajout (copie du fichier BASE dans un autre)
-    copieFichier(fichBASE, fichBASE_old);
+        //Création du fichier FICH_BASE avec ajout (copie du fichier BASE dans un autre)
+        copieFichier(fichBASE, fichBASE_old);
 
-    //Tri par ordre alphabétique
-    triBulleAlphabetique(nbStudentInFile(fichBASE_old), tableau);
+        //Tri par ordre alphabétique
+        triBulleAlphabetique(nbStudentInFile(fichBASE_old), tableau);
 
-    //Création du nouveau fichBASE
-    pointeurFichier = fopen(fichBASE, "w");
-    creationFichier(pointeurFichier, tableau, nbStudentInFile(fichBASE_old));
+        //Création du nouveau fichBASE
+        pointeurFichier = fopen(fichBASE, "w");
+        creationFichier(pointeurFichier, tableau, nbStudentInFile(fichBASE_old));
 
-    //lecture du fichier FICH_BASE avec ajout
-    printf("\n\nLe tri par ordre alphabetique avec l'ajout donne :\n\n");
-    pointeurFichier = fopen(fichBASE, "r");
-    lectureFichier(pointeurFichier, tableau, nbStudentInFile(fichBASE_old));
+        //lecture du fichier FICH_BASE avec ajout
+        printf("\n\nLe tri par ordre alphabetique avec l'ajout donne :\n\n");
+        pointeurFichier = fopen(fichBASE, "r");
+        lectureFichier(pointeurFichier, tableau, nbStudentInFile(fichBASE_old));
+    }
 }
 
 //Choix 3: correction de l'adresse e-mail
@@ -390,17 +405,18 @@ char menuDeTravail()
            "\n\t\t\t       (2).    Ajouter un etudiant"
            "\n\t\t\t       (3).    Corriger l'adresse e-mail"
            "\n\t\t\t       (4).    Creer le fichier final FICH_FINAL"
-           "\n\n\n\tTapez votre choix [1-2-3-4] : ");
+           "\n\t\t\t       (5).    Quitter le programme"
+           "\n\n\n\tTapez votre choix [1-2-3-4-5] : ");
 
     scanf("%s", &choixMenu);
 
     //Contrôle de saisie
-    while (choixMenu != '1' && choixMenu != '2' && choixMenu != '3' && choixMenu != '4')
+    while (choixMenu != '1' && choixMenu != '2' && choixMenu != '3' && choixMenu != '4' && choixMenu != '5')
     {
-        system("color 4f");
-        printf("\nVeuillez saisir entre [1-2-3-4] s'il vous pla\214t : ");
+        //system("color 4f");
+        printf("\nVeuillez saisir entre [1-2-3-4-5] s'il vous plait : ");
         scanf("%s", &choixMenu);
-        system("pause");
+        //system("pause");
     }
     //Si jamais l'on retourne un caractère c'est parce que l'utilisateur a sélectionné l'une des options proposées
     return choixMenu;
