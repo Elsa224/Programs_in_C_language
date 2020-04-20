@@ -1,3 +1,4 @@
+Ally_au_lit		ENSIT_218	19	allySaysBye@gmail.com	18.00	12.00	11.00	17.00	14.50	0	0
 Ametchi_Liam		ENSIT_200	19	ametchiliam2020@gmail.com	17.00	14.00	19.25	13.00	15.81	0	0
 Coulibaly_Hans		ENSIT_210	19	coulibalyhans20@yahoo.org	19.00	15.00	16.50	15.00	16.38	0	1
 Dadja_Gabriel		ENSIT_205	35	gabrieldadja200@ymail.org	13.00	11.25	12.00	17.25	13.38	0	0

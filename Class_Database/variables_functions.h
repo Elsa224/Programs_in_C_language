@@ -192,7 +192,6 @@ void creationFichier(FILE *pointeurFichier, etudiant tableau[], int taille)
         //Création de la BD
         if ( i == taille-1) //Pour le dernier étudiant, on va éviter de faire un retour à la ligne
         {
-            printf("\n\nJE rentre dans le if du sans retour à la ligne!!!:\n\n");   //PRINTF DE TTTTTEEESSSSTTTTTT//
             fprintf(pointeurFichier, "%s\t\t%s\t%d\t%s\t"
                                  "%.2lf\t%.2lf\t%.2lf\t%.2lf\t"
                                  "%.2lf\t%.0lf\t%.0lf",
@@ -369,9 +368,9 @@ void correctionEmail(FILE *pointeurFichier, etudiant tableau[], int taille)
                 {
                     printf("\n\tVeuillez saisir l'ancienne email: ");
                     scanf("%s", emailEtudiant);
-                } while (strcmp(tableau[i].email, emailEtudiant) != 0);
+                }while (strcmp(tableau[i].email, emailEtudiant) != 0);
 
-                printf("\n\tVeuillez saisir la nouvelle adresse mail (25 caracteres pas plus pas moins): ");
+                printf("\n\tVeuillez saisir la nouvelle adresse mail : ");
                 scanf("%s", emailCorrigee);
 
                 //Maintenant qu'on a corrigé l'email, on la remplace dans le tableau
