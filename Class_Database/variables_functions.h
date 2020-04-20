@@ -45,7 +45,7 @@ char menuDeTravail();
 //Déclaration des variables globales
 FILE *fichierBD;
 int i, j, k = 1, nbNotes = 4;
-char choixMenu;
+char choixMenu, result;
 etudiant prepa2[TAILLE_N];
 
 //Fonction moyenne
